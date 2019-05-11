@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var exampleApi = ExampleApi()
+        //var exampleApi = ExampleApi()
 
         loginButton = findViewById<LoginButton>(R.id.loginButton)
         callbackManager = CallbackManager.Factory.create();

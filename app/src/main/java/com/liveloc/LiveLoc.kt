@@ -1,10 +1,12 @@
 package com.liveloc
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
+import android.support.v4.app.ActivityCompat
 import android.support.v4.app.FragmentActivity
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
@@ -20,22 +22,16 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.LatLng
 import com.liveloc.location.GpsLocation
+import android.content.pm.PackageManager
+import com.liveloc.mapview.GoogleMaps
+import com.liveloc.mapview.MapViewInterface
 
 
-class LiveLoc : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
+class LiveLoc : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    lateinit var mMap: GoogleMap
+    lateinit var mapView: MapViewInterface
     lateinit var gpsLocation: GpsLocation
 
-
-    override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
-
-        // Add a marker in Sydney, Australia, and move the camera.
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,11 +51,40 @@ class LiveLoc : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
 
         nav_view.setNavigationItemSelectedListener(this)
 
-        // Initialize Google Maps
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment?
-        mapFragment!!.getMapAsync(this)
-        gpsTracking()
+        /*
+            Initializiation of Tools
+         */
+        initGoogleMaps()
+        initGps()
+
+    }
+
+    private fun initGoogleMaps() {
+        var supportMapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapView = GoogleMaps(supportMapFragment)
+    }
+
+    private fun initGps() {
+        ActivityCompat.requestPermissions(this,arrayOf<String>( Manifest.permission.ACCESS_FINE_LOCATION), 1);
+    }
+
+    /*
+        TODO: handle permission denied
+     */
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            1 -> {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    gpsLocation = GpsLocation(this,mapView)
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return
+            }
+        }// other 'case' lines to check for other
+        // permissions this app might request
     }
 
     override fun onBackPressed() {
@@ -113,20 +138,7 @@ class LiveLoc : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
         return true
     }
 
-    fun gpsTracking(){
-        gpsLocation = GpsLocation(this,applicationContext)
-    }
 
-    override fun onStart() {
-        super.onStart();
-        gpsLocation.start()
-    }
-
-    override fun onStop() {
-        super.onStop();
-        gpsLocation.stop()
-
-    }
     companion object {
         //private val INTENT_USER_ID = "user_id"
         fun newIntent(context: Context): Intent {
