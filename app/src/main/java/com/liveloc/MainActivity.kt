@@ -20,10 +20,8 @@ import android.content.pm.PackageInfo
 import android.util.Log
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
-
-
-
-
+import android.support.v4.content.ContextCompat.startActivity
+import com.liveloc.rest.ExampleApi
 
 
 class MainActivity : AppCompatActivity() {
@@ -42,15 +40,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        var exampleApi = ExampleApi()
 
-        loginButton = findViewById<LoginButton>(R.id.login_button)
+        loginButton = findViewById<LoginButton>(R.id.loginButton)
         callbackManager = CallbackManager.Factory.create();
 
         if (AccessToken.getCurrentAccessToken() != null) {
-            Toast.makeText(applicationContext , "Damn Logged in:" + AccessToken.getCurrentAccessToken() , Toast.LENGTH_LONG).show()
+            login()
         }else{
-            Toast.makeText(applicationContext , "No Access Token" , Toast.LENGTH_LONG).show()
+            Toast.makeText(applicationContext , "Cannot Login To Server" , Toast.LENGTH_LONG).show()
         }
+
 
         loginButton.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
@@ -60,30 +60,28 @@ class MainActivity : AppCompatActivity() {
             override fun onCancel() {}
             override fun onError(error: FacebookException) {}
         })
+
         loginButton.setReadPermissions(Arrays.asList("email", "public_profile"))
         callbackManager = CallbackManager.Factory.create()
         loginButton.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
-                val accessToken = loginResult.accessToken
-                AccessToken.setCurrentAccessToken(accessToken)
+                handleAccessToke(loginResult.accessToken)
             }
-
             override fun onCancel() {}
             override fun onError(error: FacebookException) {}
         })
-
-        askFortoken = findViewById<Button>(R.id.askForToken)
-        askFortoken.setOnClickListener {
-            if (AccessToken.getCurrentAccessToken() != null) {
-                Toast.makeText(applicationContext , AccessToken.getCurrentAccessToken().token , Toast.LENGTH_LONG).show()
-            }else{
-                Toast.makeText(applicationContext , "No" , Toast.LENGTH_LONG).show()
-            }
-        }
-
-
         logReleaseKey()
 
+    }
+
+    private fun handleAccessToke(accessToken: AccessToken?) {
+        AccessToken.setCurrentAccessToken(accessToken)
+        login()
+    }
+
+    private fun login() {
+        val liveLocActivity = LiveLoc.newIntent(this)
+        startActivity(liveLocActivity)
     }
 
     private fun logReleaseKey() {
@@ -100,7 +98,6 @@ class MainActivity : AppCompatActivity() {
         } catch (e: NoSuchAlgorithmException) {
             e.printStackTrace()
         }
-
     }
 
     public override fun onActivityResult(requestCode: Int, resulrCode: Int, data: Intent?) {
