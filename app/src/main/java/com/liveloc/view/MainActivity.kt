@@ -1,8 +1,7 @@
-package com.liveloc
+package com.liveloc.view
 
 import android.content.Intent
-import android.net.Uri
-import android.support.v7.app.AppCompatActivity
+//import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
@@ -13,15 +12,13 @@ import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
 import java.util.*
 import com.facebook.AccessToken
-import com.facebook.AccessTokenTracker
-import com.facebook.login.LoginManager
 import android.content.pm.PackageManager
-import android.content.pm.PackageInfo
 import android.util.Log
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
-import android.support.v4.content.ContextCompat.startActivity
-import com.liveloc.rest.ExampleApi
+//import android.support.v4.content.ContextCompat.startActivity
+import androidx.appcompat.app.AppCompatActivity
+import com.liveloc.R
 
 
 class MainActivity : AppCompatActivity() {

@@ -18,11 +18,11 @@
         <uses-library android:name="org.apache.http.legacy" android:required="false" />
 
         <activity
-                android:name=".LiveLoc"
+                android:name=".view.LiveLoc"
                 android:label="@string/title_activity_live_loc"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

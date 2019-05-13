@@ -1,13 +1,8 @@
 package com.liveloc.rest
 
 import android.util.Log
-import android.widget.Toast
-import com.liveloc.BuildConfig
-import com.liveloc.MainActivity
-import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
-import retrofit2.Retrofit
 
 class ExampleApi {
     init {

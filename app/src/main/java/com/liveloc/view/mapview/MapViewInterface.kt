@@ -1,4 +1,4 @@
-package com.liveloc.mapview
+package com.liveloc.view.mapview
 
 import com.liveloc.model.Location
 
