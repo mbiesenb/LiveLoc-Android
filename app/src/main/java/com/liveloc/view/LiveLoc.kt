@@ -26,23 +26,32 @@ import com.liveloc.view.mapview.MapViewInterface
 import com.liveloc.model.group.Group
 import com.liveloc.viewmodel.GroupViewModel
 import android.view.MenuInflater
+import android.widget.ArrayAdapter
+import android.widget.ListView
 import androidx.appcompat.view.menu.MenuBuilder
-
-
+import androidx.recyclerview.widget.RecyclerView
+import com.liveloc.view.Adapter.GroupListAdapter
 
 
 class LiveLoc : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+    /*
+        Recycler View Stuff
+     */
+    var groups: MutableList<Group> = mutableListOf()
+    lateinit var groupListView : ListView
+    lateinit var groupListAdapter : ArrayAdapter<Group>
 
-    lateinit var groupViewModel : GroupViewModel
+
+    lateinit var groupViewModel: GroupViewModel
     lateinit var mapView: MapViewInterface
     lateinit var gpsLocation: GpsLocation
 
     /**
      *  Screencomponents
      */
-    lateinit var grouMenu : Menu
-    lateinit var supportMapFragment : SupportMapFragment
+    lateinit var grouMenu: Menu
+    lateinit var supportMapFragment: SupportMapFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,46 +71,49 @@ class LiveLoc : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
-        nav_view.setNavigationItemSelectedListener(this)
+        //nav_view.setNavigationItemSelectedListener(this)
 
 
         /*
             initializazion of Group Repository
          */
-        try {
-            groupViewModel = ViewModelProviders.of(this).get(GroupViewModel::class.java)
-        }catch (exception : Exception){
-            Log.d("GROUP", exception.toString())
-        }
-        groupViewModel.getAll().observe(this, object : Observer<List<Group>> {
-            override fun onChanged(groups: List<Group>){
-                updateGroupList(groups)
-            }
-        })
-
         /*
             Initializiation of Tools
             Order is important !
          */
         initScreenComponents()
+        initObervers()
         initGoogleMaps()
         initGps()
 
     }
 
+    private fun initObervers() {
+        try {
+            groupViewModel = ViewModelProviders.of(this).get(GroupViewModel::class.java)
+        } catch (exception: Exception) {
+            Log.d("GROUP", exception.toString())
+        }
+        groupViewModel.getAll().observe(this, object : Observer<List<Group>> {
+            override fun onChanged(groups: List<Group>) {
+                updateGroupList(groups)
+            }
+        })
+    }
+
     private fun initScreenComponents() {
         supportMapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-
-        //grouMenu = findViewById(R.id.group_menu)
-
+        groupListView = findViewById<ListView>(R.id.group_list_view)
+        groupListAdapter = GroupListAdapter(this,groups)
+        groupListView.adapter = groupListAdapter
     }
 
     private fun initGoogleMaps() {
-       mapView = GoogleMaps(supportMapFragment)
+        mapView = GoogleMaps(supportMapFragment)
     }
 
     private fun initGps() {
-        ActivityCompat.requestPermissions(this,arrayOf<String>( Manifest.permission.ACCESS_FINE_LOCATION), 1);
+        ActivityCompat.requestPermissions(this, arrayOf<String>(Manifest.permission.ACCESS_FINE_LOCATION), 1);
     }
 
     /*
@@ -112,7 +124,7 @@ class LiveLoc : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
             1 -> {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    gpsLocation = GpsLocation(this,mapView)
+                    gpsLocation = GpsLocation(this, mapView)
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
@@ -134,8 +146,6 @@ class LiveLoc : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.live_loc, menu)
-
-        //menu.add(0, 0, 0, "Option1").setShortcut('3', 'c');
         return true
     }
 
@@ -150,40 +160,13 @@ class LiveLoc : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
-        when (item.itemId) {
-            R.id.nav_camera -> {
-                // Handle the camera action
-            }
-            R.id.nav_gallery -> {
-
-            }
-            R.id.nav_slideshow -> {
-
-            }
-            R.id.nav_manage -> {
-
-            }
-            R.id.nav_share -> {
-
-            }
-            R.id.nav_send -> {
-
-            }
-        }
-
-        drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
 
-    fun updateGroupList(groups : List<Group>){
-        val menu = MenuBuilder(this)
-        MenuInflater(this).inflate(R.menu.activity_live_loc_view_drawer, menu)
-        for( group in groups){
-            Log.d("GROUP" , group.name)
-            //menu.add(group.toString())
-            menu.add(0,0,0,"Menu")?.setIcon(R.drawable.com_facebook_button_icon)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-        }
+    fun updateGroupList(groups: List<Group>) {
+        this.groups.clear()
+        this.groups = groups as MutableList<Group>
+        this.groupListAdapter.addAll(groups)
     }
 
 

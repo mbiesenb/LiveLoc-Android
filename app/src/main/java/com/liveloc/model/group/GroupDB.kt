@@ -50,9 +50,9 @@ abstract class GroupDB : RoomDatabase() {
         class PopulateDbAsync(val groupDB: GroupDB) : AsyncTask <Void, Void, Void>() {
             val groupDAO = groupDB.groupDAO()
             override fun doInBackground(vararg params: Void?): Void? {
-                groupDAO.insert(Group(UUID.randomUUID().toString() , "TestGroup1", "TopSecretPassword"))
-                groupDAO.insert(Group(UUID.randomUUID().toString() , "TestGroup2", "TopSecretPassword"))
-                groupDAO.insert(Group(UUID.randomUUID().toString() , "TestGroup3", "TopSecretPassword"))
+                groupDAO.insert(Group(UUID.randomUUID().toString() , "Family", "TopSecretPassword"))
+                groupDAO.insert(Group(UUID.randomUUID().toString() , "Friends", "TopSecretPassword"))
+                groupDAO.insert(Group(UUID.randomUUID().toString() , "Tourist Group", "TopSecretPassword"))
                 return null
             }
 

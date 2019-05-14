@@ -14,13 +14,33 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
+
     <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_view"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
-            app:headerLayout="@layout/nav_header_live_loc"
-            app:menu="@menu/activity_live_loc_view_drawer"/>
+    >
+            <!--app:headerLayout="@layout/nav_header_live_loc">-->
+
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:orientation="vertical">
+            <include
+                    layout="@layout/nav_header_live_loc"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"/>
+
+            <ListView android:layout_width="match_parent"
+                      android:layout_height="357dp"
+                      android:id="@+id/group_list_view"
+                      android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
+                      app:layout_constraintTop_toBottomOf="@+id/map">
+
+            </ListView>
+        </LinearLayout>
+    </com.google.android.material.navigation.NavigationView>
+
 
 </androidx.drawerlayout.widget.DrawerLayout>
