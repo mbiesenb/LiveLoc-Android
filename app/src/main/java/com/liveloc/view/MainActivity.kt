@@ -20,6 +20,12 @@ import java.security.NoSuchAlgorithmException
 import androidx.appcompat.app.AppCompatActivity
 import com.liveloc.R
 
+/**
+ *  APP Conventions:
+ *  1. Color : #3867d6
+ *  2. Color : #4b7bec
+ *  3. Color : #45aaf2
+ */
 
 class MainActivity : AppCompatActivity() {
 

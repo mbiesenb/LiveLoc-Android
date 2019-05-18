@@ -24,6 +24,7 @@
     >
             <!--app:headerLayout="@layout/nav_header_live_loc">-->
 
+
         <LinearLayout android:layout_width="match_parent"
                       android:layout_height="match_parent"
                       android:orientation="vertical">
@@ -31,6 +32,28 @@
                     layout="@layout/nav_header_live_loc"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"/>
+
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <Button
+                        android:id="@+id/create_group_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/create_group"
+                        android:textColor="@color/bright_text_color"
+                        app:backgroundTint="@color/secondary"/>
+
+                <Button
+                        android:id="@+id/add_group_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/add_group"
+                        android:textColor="@color/bright_text_color"
+                        app:backgroundTint="@color/secondary"/>
+            </LinearLayout>
 
             <ListView android:layout_width="match_parent"
                       android:layout_height="357dp"

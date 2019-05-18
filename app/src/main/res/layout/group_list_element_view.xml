@@ -7,14 +7,14 @@
 
     <Switch
             android:layout_width="6dp"
-            android:layout_height="27dp" android:id="@+id/switch1" android:layout_weight="1"
+            android:layout_height="43dp" android:id="@+id/switch1" android:layout_weight="1"
             app:layout_constraintEnd_toStartOf="@+id/textView_name"
             android:layout_marginEnd="8dp" android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"/>
     <TextView
             android:id="@+id/textView_name"
             android:layout_width="152dp"
-            android:layout_height="27dp"
+            android:layout_height="41dp"
             android:textSize="18sp"
             android:textStyle="bold"
             android:gravity="center"
@@ -22,7 +22,7 @@
             android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"/>
     <ImageButton
             android:layout_width="51dp"
-            android:layout_height="wrap_content" app:srcCompat="@drawable/ic_menu_share"
+            android:layout_height="42dp" app:srcCompat="@drawable/ic_menu_share"
             android:id="@+id/imageButton"
             android:layout_marginTop="8dp"
             android:background="@null"

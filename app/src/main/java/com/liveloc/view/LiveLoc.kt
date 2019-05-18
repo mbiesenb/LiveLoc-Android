@@ -4,14 +4,13 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_live_loc_view.*
 import kotlinx.android.synthetic.main.app_bar_live_loc.*
 import com.google.android.gms.maps.SupportMapFragment
 import com.liveloc.location.GpsLocation
 import android.content.pm.PackageManager
 import android.util.Log
+import android.view.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -25,9 +24,10 @@ import com.liveloc.view.mapview.GoogleMaps
 import com.liveloc.view.mapview.MapViewInterface
 import com.liveloc.model.group.Group
 import com.liveloc.viewmodel.GroupViewModel
-import android.view.MenuInflater
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.ListView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.recyclerview.widget.RecyclerView
 import com.liveloc.view.Adapter.GroupListAdapter
@@ -39,8 +39,7 @@ class LiveLoc : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
         Recycler View Stuff
      */
     var groups: MutableList<Group> = mutableListOf()
-    lateinit var groupListView : ListView
-    lateinit var groupListAdapter : ArrayAdapter<Group>
+    lateinit var groupListAdapter: ArrayAdapter<Group>
 
 
     lateinit var groupViewModel: GroupViewModel
@@ -50,8 +49,10 @@ class LiveLoc : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
     /**
      *  Screencomponents
      */
-    lateinit var grouMenu: Menu
     lateinit var supportMapFragment: SupportMapFragment
+    lateinit var groupListView: ListView
+    lateinit var createGroupBtn: Button
+    lateinit var addGroupBtn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,8 +84,25 @@ class LiveLoc : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
          */
         initScreenComponents()
         initObervers()
+        initClickListener()
         initGoogleMaps()
         initGps()
+
+        showAddGroupPopUp()
+
+    }
+
+    fun initClickListener() {
+        createGroupBtn.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                showCreateGroupPopUp()
+            }
+        })
+        addGroupBtn.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                showAddGroupPopUp()
+            }
+        })
 
     }
 
@@ -104,7 +122,10 @@ class LiveLoc : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
     private fun initScreenComponents() {
         supportMapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         groupListView = findViewById<ListView>(R.id.group_list_view)
-        groupListAdapter = GroupListAdapter(this,groups)
+        createGroupBtn = findViewById<Button>(R.id.create_group_btn)
+        addGroupBtn = findViewById<Button>(R.id.add_group_btn)
+
+        groupListAdapter = GroupListAdapter(this, groups)
         groupListView.adapter = groupListAdapter
     }
 
@@ -167,6 +188,37 @@ class LiveLoc : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
         this.groups.clear()
         this.groups = groups as MutableList<Group>
         this.groupListAdapter.addAll(groups)
+    }
+
+
+    fun showCreateGroupPopUp() {
+        /*LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
+View popupInputDialogView = layoutInflater.inflate(R.layout.popup_input_dialog, null);*/
+        var alertDialogBuilder = AlertDialog.Builder(this);
+        // Set title, icon, can not cancel properties.
+        alertDialogBuilder.setTitle("Add new group");
+        //alertDialogBuilder.setIcon(R.drawable.ic_launcher_background);
+        alertDialogBuilder.setCancelable(true);
+        var layoutInflater = LayoutInflater.from(this)
+        var popupInputDialogView = layoutInflater.inflate(R.layout.create_group_view, null)
+        alertDialogBuilder.setView(popupInputDialogView)
+        var alertDialog: AlertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    fun showAddGroupPopUp() {
+        /*LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
+View popupInputDialogView = layoutInflater.inflate(R.layout.popup_input_dialog, null);*/
+        var alertDialogBuilder = AlertDialog.Builder(this);
+        // Set title, icon, can not cancel properties.
+        alertDialogBuilder.setTitle("Add new group");
+        //alertDialogBuilder.setIcon(R.drawable.ic_launcher_background);
+        alertDialogBuilder.setCancelable(true);
+        var layoutInflater = LayoutInflater.from(this)
+        var popupInputDialogView = layoutInflater.inflate(R.layout.add_group_view, null)
+        alertDialogBuilder.setView(popupInputDialogView)
+        var alertDialog: AlertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
 
