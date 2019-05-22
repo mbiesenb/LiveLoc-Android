@@ -17,7 +17,7 @@ class GpsLocation(val activity: Activity, val mapInterface: MapViewInterface) {
         override fun onLocationChanged(location: Location) {
             Log.d("LOCATION", "Lon ${location.longitude} ${location.latitude}")
             if ( mapInterface.isMapReady() ){
-                mapInterface.drawMyself(location = com.liveloc.model.Location(location))
+                mapInterface.drawMyself(location = com.liveloc.db.model.Location(location))
             }
         }
 

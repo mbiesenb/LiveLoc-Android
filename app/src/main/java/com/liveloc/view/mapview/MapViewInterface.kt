@@ -1,6 +1,6 @@
 package com.liveloc.view.mapview
 
-import com.liveloc.model.Location
+import com.liveloc.db.model.Location
 
 /**
  *  Defining all the Maps Functions in Interface,

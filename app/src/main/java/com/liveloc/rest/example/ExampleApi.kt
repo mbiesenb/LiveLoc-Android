@@ -1,4 +1,4 @@
-package com.liveloc.rest
+package com.liveloc.rest.example
 
 import android.util.Log
 import retrofit2.Call

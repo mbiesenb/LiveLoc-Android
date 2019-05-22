@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+             xmlns:tools="http://schemas.android.com/tools" android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
@@ -16,7 +16,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
                 android:ems="10"
-                android:id="@+id/editText"/>
+                android:id="@+id/groupNameInput"/>
     </TableRow>
     <TableRow
             android:layout_width="match_parent"
@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:ems="10"
-                android:id="@+id/editText2"/>
+                android:id="@+id/groupPasswordInput"/>
     </TableRow>
     <TableRow
             android:layout_width="match_parent"
@@ -38,6 +38,7 @@
         <Button
                 android:text="Create Group"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/button3"/>
+                android:layout_height="wrap_content"
+                android:id="@+id/create_group_btn"/>
     </TableRow>
 </TableLayout>

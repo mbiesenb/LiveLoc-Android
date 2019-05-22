@@ -6,8 +6,8 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.liveloc.model.Location
-import com.liveloc.model.Person
+import com.liveloc.db.model.Location
+import com.liveloc.db.model.Person
 
 
 class GoogleMaps(mapFragment: SupportMapFragment) : OnMapReadyCallback, MapViewInterface {
@@ -45,7 +45,7 @@ class GoogleMaps(mapFragment: SupportMapFragment) : OnMapReadyCallback, MapViewI
         }else{
             myself_marker!!.position = myGoogleMapsLatLng
         }
-        this.myself = Person(Person.MYNAME , location)
+        this.myself = Person(Person.MYNAME, location)
     }
     override fun isMapReady(): Boolean  = mMap != null
 }

@@ -1,4 +1,4 @@
-package com.liveloc.model.group
+package com.liveloc.db.model.group
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
@@ -15,9 +15,9 @@ interface GroupDAO {
     @Update
     fun update(group: Group)
 
-    @Query("DELETE FROM `group`")
+    @Query("DELETE FROM `${Group.GROUP_TABLE_NAME}` WHERE 1 = 1 ")
     fun deleteAll()
 
-    @Query("SELECT * FROM `group`")
+    @Query("SELECT * FROM `${Group.GROUP_TABLE_NAME}`")
     fun getAll() : LiveData<List<Group>>
 }

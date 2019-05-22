@@ -1,4 +1,4 @@
-package com.liveloc.rest
+package com.liveloc.rest.example
 
 import com.google.gson.annotations.SerializedName
 

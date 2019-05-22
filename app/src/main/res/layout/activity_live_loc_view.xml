@@ -39,7 +39,7 @@
                     android:layout_height="wrap_content">
 
                 <Button
-                        android:id="@+id/create_group_btn"
+                        android:id="@+id/create_group_show_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/create_group"
@@ -47,7 +47,7 @@
                         app:backgroundTint="@color/secondary"/>
 
                 <Button
-                        android:id="@+id/add_group_btn"
+                        android:id="@+id/add_group_show_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/add_group"

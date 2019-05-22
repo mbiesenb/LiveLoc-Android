@@ -1,4 +1,4 @@
-package com.liveloc.model
+package com.liveloc.db.model
 
 class Person {
     var name : String = ""

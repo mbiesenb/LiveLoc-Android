@@ -1,4 +1,4 @@
-package com.liveloc.rest
+package com.liveloc.rest.example
 
 import retrofit2.Call
 import retrofit2.Retrofit

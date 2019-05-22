@@ -20,7 +20,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:ems="10"
-                tools:layout_editor_absoluteY="165dp" android:id="@+id/editText6"
+                tools:layout_editor_absoluteY="165dp" android:id="@+id/groupIdInput"
                 android:text="192873648" tools:layout_editor_absoluteX="85dp"/>
     </TableRow>
     <TableRow
@@ -29,6 +29,7 @@
         <Button
                 android:text="Button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/button2"/>
+                android:layout_height="wrap_content"
+                android:id="@+id/add_group_btn"/>
     </TableRow>
 </TableLayout>

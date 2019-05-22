@@ -1,4 +1,4 @@
-package com.liveloc.model
+package com.liveloc.db.model
 
 import android.location.Location
 import com.google.android.gms.maps.model.LatLng
@@ -21,9 +21,9 @@ class Location {
 
     override fun toString(): String =  "longitude: ${longitude} , latitude: ${latitude}"
     override fun equals(other: Any?): Boolean {
-        if ( other !is com.liveloc.model.Location )  return false
+        if ( other !is com.liveloc.db.model.Location)  return false
         else{
-            var otherLocation = other as com.liveloc.model.Location
+            var otherLocation = other as com.liveloc.db.model.Location
             return longitude == otherLocation.longitude && latitude == otherLocation.latitude
         }
     }

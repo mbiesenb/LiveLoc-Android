@@ -22,14 +22,16 @@ import com.google.android.material.snackbar.Snackbar
 import com.liveloc.R
 import com.liveloc.view.mapview.GoogleMaps
 import com.liveloc.view.mapview.MapViewInterface
-import com.liveloc.model.group.Group
+import com.liveloc.db.model.group.Group
 import com.liveloc.viewmodel.GroupViewModel
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ListView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.recyclerview.widget.RecyclerView
+import com.liveloc.rest.group.GroupDTO
 import com.liveloc.view.Adapter.GroupListAdapter
 
 
@@ -46,13 +48,19 @@ class LiveLoc : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
     lateinit var mapView: MapViewInterface
     lateinit var gpsLocation: GpsLocation
 
+    /*
+        Instance Variables
+     */
+    lateinit var currentDialog: AlertDialog
     /**
      *  Screencomponents
      */
     lateinit var supportMapFragment: SupportMapFragment
     lateinit var groupListView: ListView
-    lateinit var createGroupBtn: Button
-    lateinit var addGroupBtn: Button
+
+    lateinit var createGroupShowBtn: Button
+    lateinit var addGroupShowBtn: Button
+    //lateinit var addGroupBtn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,46 +80,38 @@ class LiveLoc : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
-        //nav_view.setNavigationItemSelectedListener(this)
 
-
-        /*
-            initializazion of Group Repository
-         */
-        /*
-            Initializiation of Tools
-            Order is important !
-         */
         initScreenComponents()
+        initViewModel()
         initObervers()
         initClickListener()
         initGoogleMaps()
         initGps()
 
-        showAddGroupPopUp()
-
     }
 
     fun initClickListener() {
-        createGroupBtn.setOnClickListener(object : View.OnClickListener {
+        createGroupShowBtn.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 showCreateGroupPopUp()
             }
         })
-        addGroupBtn.setOnClickListener(object : View.OnClickListener {
+        addGroupShowBtn.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 showAddGroupPopUp()
             }
         })
 
     }
-
-    private fun initObervers() {
+    private fun initViewModel(){
         try {
             groupViewModel = ViewModelProviders.of(this).get(GroupViewModel::class.java)
         } catch (exception: Exception) {
             Log.d("GROUP", exception.toString())
         }
+    }
+    private fun initObervers() {
+        groupViewModel.deleteAll()
         groupViewModel.getAll().observe(this, object : Observer<List<Group>> {
             override fun onChanged(groups: List<Group>) {
                 updateGroupList(groups)
@@ -122,9 +122,8 @@ class LiveLoc : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
     private fun initScreenComponents() {
         supportMapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         groupListView = findViewById<ListView>(R.id.group_list_view)
-        createGroupBtn = findViewById<Button>(R.id.create_group_btn)
-        addGroupBtn = findViewById<Button>(R.id.add_group_btn)
-
+        createGroupShowBtn = findViewById<Button>(R.id.create_group_show_btn)
+        addGroupShowBtn = findViewById<Button>(R.id.add_group_show_btn)
         groupListAdapter = GroupListAdapter(this, groups)
         groupListView.adapter = groupListAdapter
     }
@@ -165,15 +164,11 @@ class LiveLoc : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.live_loc, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
             R.id.action_settings -> return true
             else -> return super.onOptionsItemSelected(item)
@@ -204,21 +199,38 @@ View popupInputDialogView = layoutInflater.inflate(R.layout.popup_input_dialog, 
         alertDialogBuilder.setView(popupInputDialogView)
         var alertDialog: AlertDialog = alertDialogBuilder.create();
         alertDialog.show();
+        var createGroupBtn: Button = popupInputDialogView.findViewById<Button>(R.id.create_group_btn)
+        var groupNameInput : EditText = popupInputDialogView.findViewById<EditText>(R.id.groupNameInput)
+        var groupPasswordInput : EditText = popupInputDialogView.findViewById<EditText>(R.id.groupPasswordInput)
+
+        createGroupBtn.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                groupViewModel.create(groupNameInput.text.toString() , groupPasswordInput.text.toString())
+                alertDialog.cancel()
+            }
+        })
+
     }
 
     fun showAddGroupPopUp() {
-        /*LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
-View popupInputDialogView = layoutInflater.inflate(R.layout.popup_input_dialog, null);*/
         var alertDialogBuilder = AlertDialog.Builder(this);
-        // Set title, icon, can not cancel properties.
         alertDialogBuilder.setTitle("Add new group");
-        //alertDialogBuilder.setIcon(R.drawable.ic_launcher_background);
         alertDialogBuilder.setCancelable(true);
         var layoutInflater = LayoutInflater.from(this)
         var popupInputDialogView = layoutInflater.inflate(R.layout.add_group_view, null)
         alertDialogBuilder.setView(popupInputDialogView)
         var alertDialog: AlertDialog = alertDialogBuilder.create();
         alertDialog.show();
+        this.currentDialog = alertDialog
+
+        var addGroupBtn: Button = popupInputDialogView.findViewById<Button>(R.id.add_group_btn)
+        var groupIdInput : EditText = popupInputDialogView.findViewById<EditText>(R.id.groupIdInput)
+        addGroupBtn.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                groupViewModel.add(groupIdInput.text.toString())
+                currentDialog.cancel()
+            }
+        })
     }
 
 
