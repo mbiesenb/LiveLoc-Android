@@ -36,20 +36,24 @@
             <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:weightSum="1">
 
                 <Button
                         android:id="@+id/create_group_show_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="0.50"
                         android:text="@string/create_group"
                         android:textColor="@color/bright_text_color"
-                        app:backgroundTint="@color/secondary"/>
+                        app:backgroundTint="@color/secondary"
+                        app:cornerRadius="30dp" />
 
                 <Button
                         android:id="@+id/add_group_show_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="0.50"
                         android:text="@string/add_group"
                         android:textColor="@color/bright_text_color"
                         app:backgroundTint="@color/secondary"/>

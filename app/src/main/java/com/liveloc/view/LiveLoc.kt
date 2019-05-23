@@ -180,8 +180,8 @@ class LiveLoc : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     fun updateGroupList(groups: List<Group>) {
-        this.groups.clear()
         this.groups = groups as MutableList<Group>
+        this.groupListAdapter.clear()
         this.groupListAdapter.addAll(groups)
     }
 

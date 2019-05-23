@@ -8,6 +8,10 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.liveloc.db.model.Location
 import com.liveloc.db.model.Person
+import android.R
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+
+
 
 
 class GoogleMaps(mapFragment: SupportMapFragment) : OnMapReadyCallback, MapViewInterface {
@@ -16,6 +20,7 @@ class GoogleMaps(mapFragment: SupportMapFragment) : OnMapReadyCallback, MapViewI
 
     var myself : Person = Person.NOT_READY
     var myself_marker : Marker? = null
+    var person_markers : HashMap<String , Marker> = hashMapOf()
     var persons = listOf<Person>()
 
 
@@ -48,4 +53,28 @@ class GoogleMaps(mapFragment: SupportMapFragment) : OnMapReadyCallback, MapViewI
         this.myself = Person(Person.MYNAME, location)
     }
     override fun isMapReady(): Boolean  = mMap != null
+
+    override fun drawPerson(persons: List<Person>) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        for ( person in persons){
+            var marker = person_markers[person.server_person_id]
+            marker!!.position = person.location.getGoogleLatLng()
+        }
+    }
+
+    fun getMarker(person : Person){
+        if (person_markers.containsKey(person.server_person_id)){
+            var marker = person_markers[person.server_person_id]!!
+            marker.position = person.location.getGoogleLatLng()
+        }else{
+            var newMarker = mMap.addMarker(
+                MarkerOptions()
+                    .position(person.location.getGoogleLatLng())
+                    .title("Sydney")
+                    .snippet("Population: 4,627,300")
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_delete))
+            );
+            person_markers.put(person.server_person_id,newMarker)
+        }
+    }
 }

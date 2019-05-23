@@ -1,6 +1,7 @@
 package com.liveloc.db.model
 
 class Person {
+    var server_person_id = ""
     var name : String = ""
     var location : Location = Location()
 

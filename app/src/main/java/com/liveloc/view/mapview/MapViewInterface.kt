@@ -1,6 +1,7 @@
 package com.liveloc.view.mapview
 
 import com.liveloc.db.model.Location
+import com.liveloc.db.model.Person
 
 /**
  *  Defining all the Maps Functions in Interface,
@@ -8,5 +9,6 @@ import com.liveloc.db.model.Location
  */
 interface MapViewInterface {
     fun drawMyself(location: Location)
+    fun drawPerson(persons : List<Person>)
     fun isMapReady() : Boolean
 }
